@@ -31,3 +31,23 @@ int mt_getscreensize(int *rows, int *cols) {
         return -1;
     }
 }
+
+int mt_setfgcolor(enum colors color) {
+    if((color >= 0 && color <= 7) || (color == 9)) {
+        printf("\E[3%dm", color); 
+        return 0;
+    }
+    else {
+        return -1;
+    }    
+}
+
+int mt_setbgcolor(enum colors color) {
+    if((color >=0 && color <= 7) || (color == 9)) {
+        printf("\E[4%dm", color); 
+        return 0;
+    }
+    else {
+        return -1;
+    }  
+}
