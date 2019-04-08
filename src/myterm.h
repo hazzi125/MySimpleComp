@@ -2,6 +2,9 @@
 #define _MY_TERM
 
 #include <stdio.h>
+#include <termios.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 
 enum colors {
     BLACK, 

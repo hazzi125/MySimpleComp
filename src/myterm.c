@@ -1,6 +1,4 @@
 #include "myterm.h"
-#include <termios.h>
-#include <sys/ioctl.h>
 
 int mt_clrscr() {
     printf("\E[H\E[J");

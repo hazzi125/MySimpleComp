@@ -1,8 +1,13 @@
-#include "myterm.h"
+#include "myBigChars.h"
+
 int main() {
     mt_clrscr();
-    mt_gotoXY(50, 20);
-    int x, y;
-    mt_getscreensize(&x, &y);
-    printf("%d, %d\n", x, y);
+    int m[2];
+    m[0] = 541073948;
+    m[1] = 472006712;
+    bc_printbigchar(m, 4, 4, 2, 3);
+    printf("\n");
+    bc_setbigcharpos(m, 1, 5, 0);
+    bc_printbigchar(m, 4, 4, 2, 3);
+    printf("\n");
 }
