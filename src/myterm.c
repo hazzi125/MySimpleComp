@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "myterm.h"
 
 int mt_clrscr() {

@@ -1,13 +1,27 @@
-#include "myBigChars.h"
+#include <stdio.h>
+#include "showComp.h"
 
 int main() {
     mt_clrscr();
-    int m[2];
-    m[0] = 541073948;
-    m[1] = 472006712;
-    bc_printbigchar(m, 4, 4, 2, 3);
+    sc_regInit();
+   
+    inst_counter = 7;
+    sc_memorySet(6, 165);
+    sc_memorySet(5, 14);
+    sc_memorySet(7, 7854);
+
+    sc_regSet(OVERFLOW, 1);
+    sc_regSet(NULL_DEL, 1);
+    sc_regSet(OUT_OF_MEMORY, 1);
+    sc_regSet(IMPULS, 1);
+    sc_regSet(WRONG_COMMAND, 1);
+
+    memPrint();
+    printboxes();
+    showCPU();
+    printflags();
+    keys();
+    printBigChars();
     printf("\n");
-    bc_setbigcharpos(m, 1, 5, 0);
-    bc_printbigchar(m, 4, 4, 2, 3);
-    printf("\n");
+    //mt_gotoXY(20, 2);
 }

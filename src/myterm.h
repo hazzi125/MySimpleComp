@@ -1,13 +1,12 @@
 #ifndef _MY_TERM
 #define _MY_TERM
 
-#include <stdio.h>
 #include <termios.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
 
 enum colors {
-    BLACK, 
+    /*BLACK, 
     RED,  
     GREEN,
     YELLOW,
@@ -15,6 +14,24 @@ enum colors {
     PURPLE,
     LIGHT_BLUE,
     WHITE, 
+    DEFAULT = 9*/
+
+    BLACK,
+    BLUE,
+    GREEN,
+    CYAN,
+    RED,
+    MAGENTA,
+    BROWN,
+    LIGHTGRAY,
+    DARKGRAY,
+    LIGHTBLUE,
+    LIGHTGREEN,
+    LIGHTCYAN,
+    LIGHTRED,
+    LIGHTMAGENTA,
+    YELLOW,
+    WHITE,
     DEFAULT = 9
 };
 
