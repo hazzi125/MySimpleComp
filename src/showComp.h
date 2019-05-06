@@ -1,9 +1,6 @@
 #ifndef _PRINT_COMP_
 #define _PRINT_COMP_
 
-#include "myBigChars.h"
-#include "mySimpleComputer.h"
-
 int accumulator;
 int inst_counter;
 
