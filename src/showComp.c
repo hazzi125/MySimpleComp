@@ -124,3 +124,25 @@ void printBigChars() {
     }
     mt_gotoXY(25, 1);
 }
+
+void allshow() {
+    memPrint();
+    printboxes();
+    showCPU();
+    printflags();
+    keys();
+    printBigChars();
+}
+
+void timer() {
+    curs++;
+}
+
+void reset() {
+    accumulator = 0;
+    inst_counter = 0;
+    curs = 0;
+    sc_regSet(IMPULS, 1);
+    sc_memoryInit();
+    sc_regInit();
+}

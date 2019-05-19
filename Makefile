@@ -27,7 +27,7 @@ build/myReadkey.o: src/myReadkey.c src/myReadkey.h
 	$(GCC) -c src/myReadkey.c -o build/myReadkey.o
 
 build/main.o: $(HEAD)
-	$(GCC) -c src/main.c -o build/main.o
+	gcc -Wall -Werror -c src/main.c -o build/main.o
 
 bin:
 	mkdir bin

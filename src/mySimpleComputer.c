@@ -76,7 +76,7 @@ int sc_regSet (int registr, int value) {
 int sc_regGet (int registr, int * value) {
     if ( (registr >= 1) && (registr <= 5)) { 
         *value = (reg_flags >> (registr - 1)) & 0x1;
-        return 0;
+        return *value;
     }
     else
         return -1;
@@ -89,12 +89,21 @@ int sc_commandEncode(int command, int operand, int * value) {
         if(command == mas_commands[i])
             buf = 1;
 
+    if(buf == 0) {
+        sc_regSet(WRONG_COMMAND, 1);
+        return -1;
+    }
+
     if((buf == 1) && ((operand >= 0) && (operand < N))) {
         *value = (command << 7) | operand;
+        sc_regSet(WRONG_COMMAND, 0);
+        sc_regSet(OUT_OF_MEMORY, 0);
         return 0;
     }
-    else
+    else {
+        sc_regSet(OUT_OF_MEMORY, 1);
         return -1;
+    }
 }
 
 int sc_commandDecode(int value, int * command, int * operand) {
