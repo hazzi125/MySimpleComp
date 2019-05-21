@@ -107,8 +107,8 @@ int bc_initBC(int *big, char val) {
             break;
 
         case '0':
-            big[0] = 2172748287;
-            big[1] = 4286677377;
+            big[0] = 2168595480;
+            big[1] = 405029505;
             break;
 
         case '1':
