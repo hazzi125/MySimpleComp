@@ -3,8 +3,8 @@
 void memPrint() {
     mt_clrscr();
     for(int i = 0; i < N; i++) {
-        if(i == curs) {
-            inst_counter = curs;
+        if(i == inst_counter) {
+            curs = inst_counter;
             mt_setfgcolor(GREEN);
             mt_setbgcolor(BLACK);
         }
@@ -26,7 +26,9 @@ void showCPU() {
     mt_gotoXY(2, 67);
     printf("accumulator");
     mt_gotoXY(3, 69);
-    printf("+%04X", accumulator);
+    if(accumulator >= 0)
+        printf("+");
+    printf("%04d", accumulator);
     mt_gotoXY(5, 64);
     printf("instructionCounter");
     mt_gotoXY(6, 69);
@@ -34,7 +36,7 @@ void showCPU() {
     mt_gotoXY(8, 67);
     printf("Operation");
     mt_gotoXY(9, 68);
-    printf("+00 : 00");
+    printf("+%02d : +%02d", command, operand);
 }
 
 void printflags() {
@@ -128,19 +130,20 @@ void allshow() {
     printflags();
     keys();
     printBigChars();
+    printf("Input/Output:");
 }
 
 void timer() {
     int val;
-    if(!sc_regGet(IMPULS, &val))
-        curs++;
+    if(!sc_regGet(IMPULS, &val)) {
+        inst_counter++;
+    }
 }
 
 void reset() {
     accumulator = 0;
     inst_counter = 0;
     curs = 0;
-    sc_regSet(IMPULS, 1);
     sc_memoryInit();
     sc_regInit();
     sc_regSet(IMPULS, 1);

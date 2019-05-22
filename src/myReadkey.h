@@ -1,14 +1,19 @@
-#ifndef MY_READKEY
-#define MY_READKEY
+#ifndef _MY_READKEY_
+#define _MY_READKEY_
 
 #include <stdio.h>
 #include <termios.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+#include "myterm.h"
 
 int curs;
 
 enum keys {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
     LOAD,
     SAVE,
     RUN,
@@ -16,11 +21,8 @@ enum keys {
     RESET,
     F5,
     F6,
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
     QUIT,
+    ENTER,
     NONE
 };
 
