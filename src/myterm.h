@@ -1,5 +1,5 @@
-#ifndef _MY_TERM
-#define _MY_TERM
+#ifndef _MY_TERM_
+#define _MY_TERM_
 
 #include <stdio.h>
 #include <termios.h>
@@ -7,22 +7,14 @@
 #include <unistd.h>
 
 enum colors {
-    BLACK,
-    BLUE,
+    BLACK, 
+    RED,  
     GREEN,
-    CYAN,
-    RED,
-    MAGENTA,
-    BROWN,
-    LIGHTGRAY,
-    DARKGRAY,
-    LIGHTBLUE,
-    LIGHTGREEN,
-    LIGHTCYAN,
-    LIGHTRED,
-    LIGHTMAGENTA,
     YELLOW,
-    WHITE,
+    BLUE,
+    PURPLE,
+    LIGHT_BLUE,
+    WHITE, 
     DEFAULT = 9
 };
 

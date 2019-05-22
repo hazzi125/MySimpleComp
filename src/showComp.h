@@ -7,9 +7,9 @@
 #include "myBigChars.h"
 #include "mySimpleComputer.h"
 #include "myReadkey.h"
+#include "curs_work.h"
 
-int accumulator;
-int inst_counter;
+int accumulator, inst_counter, command, operand;
 
 void memPrint();
 void showCPU();

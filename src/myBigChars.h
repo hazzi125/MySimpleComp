@@ -1,5 +1,5 @@
-#ifndef _MY_BIG_CHAR
-#define _MY_BIG_CHAR
+#ifndef _MY_BIG_CHAR_
+#define _MY_BIG_CHAR_
 
 #include "myterm.h"
 

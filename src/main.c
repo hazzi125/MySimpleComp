@@ -5,6 +5,13 @@ int main() {
     system("tput reset");
     sc_memoryInit();
     sc_regInit();
+    sc_memorySet(0, 0x0F5A);
+    sc_memorySet(1, 0x0F5A);
+    sc_memorySet(2, 0x0F5A);
+    sc_memorySet(3, 0x0F5A);
+    sc_memorySet(4, 0x0F5A);
+    sc_memorySet(90, 5);
+
     sc_memorySet(6, 165);
     sc_memorySet(5, 14);
     sc_memorySet(7, 7854);
@@ -24,6 +31,7 @@ int main() {
     nval.it_value.tv_usec = 0;
 
     curs = 0;
+    int a, b, c, code; 
     while(K != QUIT) {
         allshow();
         printf("\n");
@@ -56,7 +64,7 @@ int main() {
 		        scanf("%d", &inst);
 		        if((inst >= 0) && (inst < 100)) {
 		            inst_counter = inst;
-		            curs = inst;
+		            //curs = inst;
 		            sc_regSet(OUT_OF_MEMORY, 0);
 		        }
 		        else
@@ -65,35 +73,55 @@ int main() {
 		    }
 		    case RUN: {
 		        sc_regInit();
-		        curs = 95;
+		        inst_counter = 0;
 		        break;
 		    }
 		    case RESET: {
 		        raise(SIGUSR1);
 		        break;
 		    }
+		    case STEP: {
+		        cu();
+		        break;
+		    }
+		    case ENTER: {
+		        scanf("%d", &c);
+                        if(c == 0) {
+                            printf("Enter data:\n");
+                            scanf("%d%d", &a, &b);
+                            if(sc_commandEncode(a, b, &code) == 0)
+                                sc_memorySet(curs, code);
+                            else
+                                a = b = 0;
+                        }
+                        else {
+                            scanf("%d", &a);
+                            sc_memorySet(curs, a);
+                        }
+		        break;
+		    }
 		    case UP: {
-		        curs -= 10;
-		        if(curs < 0)
-		            curs += 100;
+		        inst_counter -= 10;
+		        if(inst_counter < 0)
+		            inst_counter += 10;
 		        break;
 		    }
 		    case DOWN: {
-		        curs += 10;
-		        if(curs >= 100)
-		            curs -= 100;
+		        inst_counter += 10;
+		        if(inst_counter >= 100)
+		            inst_counter -= 10;
 		        break;
 		    }
 		    case LEFT: {
-		        curs--;
-		        if(curs < 0)
-		            curs = 99;
+		        inst_counter--;
+		        if(inst_counter < 0)
+		            inst_counter = 99;
 		        break;
 		    }
 		    case RIGHT: {
-		        curs++;
-		        if(curs == 100)
-		            curs = 0;
+		        inst_counter++;
+		        if(inst_counter == 100)
+		            inst_counter = 0;
 		        break;
 		    }
 		    default:
@@ -103,8 +131,12 @@ int main() {
         else {
             setitimer(ITIMER_REAL, &nval, NULL);
             pause();
-            if(curs > 99)
+            if(inst_counter > 10)
                 raise(SIGUSR1);
+            if(cu() == -1) {
+                sc_regSet(IMPULS, 1);
+                inst_counter = 0;
+            }
         }
     }
 }

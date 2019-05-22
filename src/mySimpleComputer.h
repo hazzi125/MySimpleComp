@@ -2,7 +2,7 @@
 #define _MY_SIMPLE_COMPUTER_
 
 #define N 100
-#define commands 12
+#define commands 15
 
 #define OVERFLOW 1
 #define NULL_DEL 2
