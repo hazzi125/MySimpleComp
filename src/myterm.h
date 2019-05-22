@@ -1,17 +1,12 @@
 #ifndef _MY_TERM
 #define _MY_TERM
 
-enum colors {
-    /*BLACK, 
-    RED,  
-    GREEN,
-    YELLOW,
-    BLUE,
-    PURPLE,
-    LIGHT_BLUE,
-    WHITE, 
-    DEFAULT = 9*/
+#include <stdio.h>
+#include <termios.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 
+enum colors {
     BLACK,
     BLUE,
     GREEN,

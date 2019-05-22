@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include "myBigChars.h"
-#include "mySimpleComputer.h"
 #include "showComp.h"
-#include "myReadkey.h"
 
 void memPrint() {
     mt_clrscr();
@@ -135,7 +131,9 @@ void allshow() {
 }
 
 void timer() {
-    curs++;
+    int val;
+    if(!sc_regGet(IMPULS, &val))
+        curs++;
 }
 
 void reset() {
@@ -145,4 +143,5 @@ void reset() {
     sc_regSet(IMPULS, 1);
     sc_memoryInit();
     sc_regInit();
+    sc_regSet(IMPULS, 1);
 }

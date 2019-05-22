@@ -1,8 +1,4 @@
-#include <stdio.h>
 #include "myReadkey.h"
-#include "termios.h"
-#include "sys/ioctl.h"
-#include "unistd.h"
 
 int rk_readkey(enum keys *key) {
     struct termios def_opt;

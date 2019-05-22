@@ -4,6 +4,9 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include "myBigChars.h"
+#include "mySimpleComputer.h"
+#include "myReadkey.h"
 
 int accumulator;
 int inst_counter;

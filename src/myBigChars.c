@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <termios.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
 #include "myBigChars.h"
 
 int bc_printA(char *str) {
@@ -189,6 +185,5 @@ int bc_initBC(int *big, char val) {
         default:
             break;
     }
-    
     return 0;
 }

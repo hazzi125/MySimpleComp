@@ -10,6 +10,8 @@
 #define IMPULS 4
 #define WRONG_COMMAND 5
 
+#include <stdio.h>
+
 int RAM[N];
 int reg_flags;
 

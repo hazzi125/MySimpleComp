@@ -1,10 +1,5 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "showComp.h"
-#include "myReadkey.h"
-#include "myBigChars.h"
-#include "myterm.h"
-#include "mySimpleComputer.h"
 
 int main() {   
     system("tput reset");
@@ -108,7 +103,8 @@ int main() {
         else {
             setitimer(ITIMER_REAL, &nval, NULL);
             pause();
-            
+            if(curs > 99)
+                raise(SIGUSR1);
         }
     }
 }

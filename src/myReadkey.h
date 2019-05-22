@@ -1,6 +1,11 @@
 #ifndef MY_READKEY
 #define MY_READKEY
 
+#include <stdio.h>
+#include <termios.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
+
 int curs;
 
 enum keys {
