@@ -28,7 +28,7 @@ void showCPU() {
     mt_gotoXY(3, 69);
     if(accumulator >= 0)
         printf("+");
-    printf("%04d", accumulator);
+    printf("%04X", accumulator);
     mt_gotoXY(5, 64);
     printf("instructionCounter");
     mt_gotoXY(6, 69);

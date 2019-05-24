@@ -1,10 +1,11 @@
-#include <stdlib.h>
-#include "showComp.h"
+#include "trans.h"
 
 int main() {   
     system("tput reset");
     sc_memoryInit();
     sc_regInit();
+    sc_regSet(IMPULS, 1);
+    
     sc_memorySet(0, 0x0F5A);
     sc_memorySet(1, 0x0F5A);
     sc_memorySet(2, 0x0F5A);
@@ -15,12 +16,11 @@ int main() {
     sc_memorySet(6, 165);
     sc_memorySet(5, 14);
     sc_memorySet(7, 7854);
+
     struct itimerval nval;
     enum keys K;
     K = NONE;
     int val, ac, inst;
-
-    sc_regSet(IMPULS, 1);
 
     signal(SIGALRM, timer);
     signal(SIGUSR1, reset);
@@ -100,6 +100,13 @@ int main() {
                         }
 		        break;
 		    }
+                    case TRANS: {
+                        if(translate() == -1)
+                            sc_regSet(OUT_OF_MEMORY, 1);
+                        else
+                            sc_regSet(OUT_OF_MEMORY, 0);
+                        break;
+                    }
 		    case UP: {
 		        inst_counter -= 10;
 		        if(inst_counter < 0)

@@ -33,6 +33,9 @@ int rk_readkey(enum keys *key) {
     if(buff[0] == 'e')
         *key = ENTER;
 
+    if(buff[0] == 'g')
+        *key = TRANS;
+
     if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == '1') && (buff[3] == '5'))
         *key = F5;
 

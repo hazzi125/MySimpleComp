@@ -19,6 +19,7 @@ enum keys {
     RUN,
     STEP,
     RESET,
+    TRANS,
     F5,
     F6,
     QUIT,
