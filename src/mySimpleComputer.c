@@ -122,7 +122,7 @@ int sc_commandDecode(int value, int * command, int * operand) {
             *command = buf_command;
             *operand = buf_operand;
         }
-        else if(buf == 0)
+        else
             return -1;
 
         return 0;

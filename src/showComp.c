@@ -79,9 +79,9 @@ void keys() {
     mt_gotoXY(14, 51);
     printf("Keys:");
     mt_gotoXY(15, 51);
-    printf("l  - load");
+    printf("l  - load      g - translator");
     mt_gotoXY(16, 51);
-    printf("s  - save");
+    printf("s  - save      e - enter");
     mt_gotoXY(17, 51);
     printf("r  - run");
     mt_gotoXY(18, 51);

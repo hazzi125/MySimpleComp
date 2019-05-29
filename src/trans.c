@@ -3,16 +3,21 @@
 int translate() {
     char str[50], *word, buf[4][9999];
     int i, memory, oper, comm, val, flag_eq;
-    FILE *f = fopen("code.sa", "r");
-    if(!f) {
-        return -1;
-    }
+    int mas[N];
 
-    while(!feof(f)) {
-        fgets(str, sizeof(str), f);
+    FILE *f1 = fopen("code.sa", "r");
+    if(!f1)
+        return -1;
+
+    for(int i = 0; i < N; i++)
+        mas[i] = 0;
+
+    while(!feof(f1)) {
+        fgets(str, sizeof(str), f1);
         word = strtok(str, " \n");
         i = 0;
         flag_eq = 0;
+
         while(word) {
             strncpy(buf[i], word, 5);
             word = strtok(NULL, " \n");
@@ -94,11 +99,15 @@ int translate() {
                 sc_commandEncode(comm, oper, &val);
             else
                 val = oper;
-            sc_memorySet(memory, val);
+            mas[memory] = val;
             i++;
         }
     }
-    fclose(f);
-    sc_memorySave("Memory.dat");
+    fclose(f1);
+    FILE* f2 = fopen("Memory.dat", "w");
+
+    fwrite(mas, sizeof(int), N, f2);
+    fclose(f2);
+    allshow();
     return 0;
 }

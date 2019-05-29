@@ -15,44 +15,47 @@ int rk_readkey(enum keys *key) {
     if(buff[0] == 'q')
         *key = QUIT;
 
-    if(buff[0] == 'l')
+    else if(buff[0] == 'l')
         *key = LOAD;
 
-    if(buff[0] == 's')
+    else if(buff[0] == 's')
         *key = SAVE;
 
-    if(buff[0] == 'r')
+    else if(buff[0] == 'r')
         *key = RUN;
 
-    if(buff[0] == 'i')
+    else if(buff[0] == 'i')
         *key = RESET;
 
-    if(buff[0] == 't')
+    else if(buff[0] == 't')
         *key = STEP;
 
-    if(buff[0] == 'e')
+    else if(buff[0] == 'e')
         *key = ENTER;
 
-    if(buff[0] == 'g')
+    else if(buff[0] == 'g')
         *key = TRANS;
 
-    if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == '1') && (buff[3] == '5'))
+    else if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == '1') && (buff[3] == '5'))
         *key = F5;
 
-    if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == '1') && (buff[3] == '7'))
+    else if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == '1') && (buff[3] == '7'))
         *key = F6;  
 
-    if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == 'A'))
+    else if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == 'A'))
         *key = UP;
 
-    if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == 'B'))
+    else if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == 'B'))
         *key = DOWN;
 
-    if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == 'D'))
+    else if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == 'D'))
         *key = LEFT;
 
-    if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == 'C'))
+    else if((buff[0] == '\033') && (buff[1] == '[') && (buff[2] == 'C'))
         *key = RIGHT;
+
+    //else
+        //*key = NONE;
 
     if(tcsetattr(0, TCSANOW, &def_opt) != 0)
         return -1;

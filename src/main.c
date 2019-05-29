@@ -1,37 +1,28 @@
-#include "trans.h"
+#include "trans_basic.h"
 
 int main() {   
     system("tput reset");
     sc_memoryInit();
     sc_regInit();
     sc_regSet(IMPULS, 1);
-    
-    sc_memorySet(0, 0x0F5A);
-    sc_memorySet(1, 0x0F5A);
-    sc_memorySet(2, 0x0F5A);
-    sc_memorySet(3, 0x0F5A);
-    sc_memorySet(4, 0x0F5A);
-    sc_memorySet(90, 5);
-
-    sc_memorySet(6, 165);
-    sc_memorySet(5, 14);
-    sc_memorySet(7, 7854);
 
     struct itimerval nval;
     enum keys K;
     K = NONE;
-    int val, ac, inst;
+    int val, temp;
 
     signal(SIGALRM, timer);
+
     signal(SIGUSR1, reset);
 
-    nval.it_interval.tv_sec = 1;
+    nval.it_interval.tv_sec = 5;
     nval.it_interval.tv_usec = 0;
+
     nval.it_value.tv_sec = 1;
     nval.it_value.tv_usec = 0;
 
     curs = 0;
-    int a, b, c, code; 
+    int a, b, c, code;
     while(K != QUIT) {
         allshow();
         printf("\n");
@@ -49,22 +40,21 @@ int main() {
 		    }
 		    case F5: {
 		        printf("Enter accumulator value: ");
-		        scanf("%d", &ac);
-		        if(ac > 0x7FFF)
+		        scanf("%d", &temp);
+		        if(temp > 0x7FFF)
 		            sc_regSet(OVERFLOW, 1);
 
 		        else {
 		            sc_regSet(OVERFLOW, 0);
-		            accumulator = ac;
+		            accumulator = temp;
                         }
 		        break;
 		    }
 		    case F6: {
 		        printf("Enter instruction counter value: ");
-		        scanf("%d", &inst);
-		        if((inst >= 0) && (inst < 100)) {
-		            inst_counter = inst;
-		            //curs = inst;
+		        scanf("%d", &temp);
+		        if((temp >= 0) && (temp < 100)) {
+		            inst_counter = temp;
 		            sc_regSet(OUT_OF_MEMORY, 0);
 		        }
 		        else
@@ -81,7 +71,11 @@ int main() {
 		        break;
 		    }
 		    case STEP: {
-		        cu();
+		        if(cu() == -1)
+                            sc_regSet(WRONG_COMMAND, 1);
+                        else
+                            sc_regSet(WRONG_COMMAND, 0);
+
 		        break;
 		    }
 		    case ENTER: {
@@ -100,19 +94,26 @@ int main() {
                         }
 		        break;
 		    }
-                    case TRANS: {
-                        if(translate() == -1)
-                            sc_regSet(OUT_OF_MEMORY, 1);
-                        else
-                            sc_regSet(OUT_OF_MEMORY, 0);
-                        break;
-                    }
 		    case UP: {
 		        inst_counter -= 10;
 		        if(inst_counter < 0)
 		            inst_counter += 10;
 		        break;
 		    }
+
+                    case TRANS: {
+                        if(translate_basic() == -1)
+                            sc_regSet(OUT_OF_MEMORY, 1);
+                        else
+                            sc_regSet(OUT_OF_MEMORY, 0);
+
+                        if(translate() == -1)
+                            sc_regSet(OUT_OF_MEMORY, 1);
+                        else
+                            sc_regSet(OUT_OF_MEMORY, 0);
+                        break;
+                    }
+                 
 		    case DOWN: {
 		        inst_counter += 10;
 		        if(inst_counter >= 100)
@@ -136,14 +137,19 @@ int main() {
 		}
         }
         else {
-            setitimer(ITIMER_REAL, &nval, NULL);
-            pause();
-            if(inst_counter > 10)
-                raise(SIGUSR1);
             if(cu() == -1) {
+                sc_regSet(WRONG_COMMAND, 1);
                 sc_regSet(IMPULS, 1);
                 inst_counter = 0;
+                allshow();
             }
+            else
+                sc_regSet(WRONG_COMMAND, 0);
+
+            setitimer(ITIMER_REAL, &nval, NULL);
+            pause();
+            if(inst_counter > 99)
+                raise(SIGUSR1);
         }
     }
 }

@@ -13,14 +13,12 @@ int alu(int com, int op) {
             else {
                 sc_regSet(OVERFLOW, 0);
                 accumulator += value;
-                //inst_counter++;
             }
             break;
         }
 
         case 31: {    
             accumulator -= value;
-            //inst_counter++;
             break;
         }
 
@@ -34,7 +32,6 @@ int alu(int com, int op) {
             else {
                 sc_regSet(NULL_DEL, 0);
                 accumulator /= value;
-                //inst_counter++;
             }
             break;
         }
@@ -49,7 +46,6 @@ int alu(int com, int op) {
             else {
                 sc_regSet(OVERFLOW, 0);
                 accumulator *= value;
-                //inst_counter++;
             }
             break;
         }
@@ -60,10 +56,9 @@ int alu(int com, int op) {
 int cu() {
     int value;
     sc_memoryGet(inst_counter, &value);
+    command = operand = 0;
     int result = sc_commandDecode(value, &command, &operand);
     if(result == -1) {
-        sc_regSet(WRONG_COMMAND, 1);
-        allshow();
         return -1;
     }
 
@@ -86,7 +81,6 @@ int cu() {
                     else {
                         sc_regSet(OVERFLOW, 0);
                         sc_memorySet(operand, a);
-                        //inst_counter++;
                     }
                     break;
                 }
@@ -94,20 +88,17 @@ int cu() {
                 case 11: {
                     sc_memoryGet(operand, &a);
                     printf("\nValue in cell: %d", a);
-                    //inst_counter++;
                     break;
                 }
 
                 case 20: {
                     sc_memoryGet(operand, &a);
                     accumulator = a;
-                    //inst_counter++;
                     break;
                 }
 
                 case 21: {
                     sc_memorySet(operand, accumulator);
-                    //inst_counter++;
                     break;
                 }
 
@@ -119,22 +110,17 @@ int cu() {
                 case 41: {
                     if(accumulator < 0)
                         inst_counter = operand;
-                    else
-                        //inst_counter++;
                     break;
                 }
 
                 case 42: {
                     if(accumulator == 0)
                         inst_counter = operand;
-                    else
-                        //inst_counter++;
                     break;
                 }
 
                 case 43: {
-                    sc_regSet(IMPULS, 1);
-                    inst_counter = curs = 0;
+                    raise(SIGUSR1)
                     break;
                 }
             }
