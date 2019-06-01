@@ -120,7 +120,7 @@ int cu() {
                 }
 
                 case 43: {
-                    raise(SIGUSR1)
+                    raise(SIGUSR1);
                     break;
                 }
             }

@@ -2,13 +2,12 @@
 
 int translate_basic() {
     char str[50], *word;
-    int number, counter = -1, var, res, temp, check_num, num_commands = 0;
+    int number, counter = -1, var, res, temp, check_num = 10, num_commands = 0;
     FILE *f1 = fopen("basic.vbs", "r");
     FILE *f2 = fopen("code.sa", "w");
 
     if(!f1)
         return -1;
-
 
     while(!feof(f1)) {
         fgets(str, sizeof(str), f1);
