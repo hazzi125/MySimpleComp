@@ -87,7 +87,19 @@ int cu() {
 
                 case 11: {
                     sc_memoryGet(operand, &a);
-                    printf("\nValue in cell: %d", a);
+                    char get_ch[10];
+                    printf("\nValue in cell: %d\nPress any key to continue...\n", a);
+
+		    struct termios def_opt;
+		    if(tcgetattr(0, &def_opt) == -1)
+			return -1;
+
+		    if(rk_mytermregime(0, 1, 1, 0, 0) == -1)
+			return -1;
+
+                    read(0, get_ch, 9);
+                    if(tcsetattr(0, TCSANOW, &def_opt) != 0)
+                        return -1;
                     break;
                 }
 
@@ -103,19 +115,24 @@ int cu() {
                 }
 
                 case 40: {
-                    inst_counter = operand;
+                    curs = inst_counter = operand;
+                    inst_counter--;
                     break;
                 }
 
                 case 41: {
-                    if(accumulator < 0)
-                        inst_counter = operand;
+                    if(accumulator < 0) {
+                        curs = inst_counter = operand;
+                        inst_counter--;
+                    }
                     break;
                 }
 
                 case 42: {
-                    if(accumulator == 0)
-                        inst_counter = operand;
+                    if(accumulator == 0) {
+                        curs = inst_counter = operand;
+                        inst_counter--;
+                    }
                     break;
                 }
 

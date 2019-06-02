@@ -107,8 +107,12 @@ int main() {
                         else
                             sc_regSet(OUT_OF_MEMORY, 0);
 
-                        if(translate() == -1)
+                        if(translate() == -1) {
+                            int qq;
+                            printf("\nhere ");
+                            scanf("%d", &qq); 
                             sc_regSet(OUT_OF_MEMORY, 1);
+                        }
                         else
                             sc_regSet(OUT_OF_MEMORY, 0);
                         break;
