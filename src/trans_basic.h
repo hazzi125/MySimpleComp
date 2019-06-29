@@ -10,14 +10,14 @@ struct list {
 
 struct list *head, *tail;
 
-int check_char(char c);
+int check_letter(char c);
 int count_weights();
 int translate_basic();
 
 int INPUT();
 int OUTPUT();
-int LET();
-int GOTO();
-int IF();
+int LET(int val);
+int GOTO(int var);
+int IF(int number);
 
 #endif

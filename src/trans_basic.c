@@ -2,13 +2,16 @@
 
 FILE *f2;
 int counter, after_end;
-char str[50];
+//int rus_after_end;
+char str[50], temp_string[50];
 
-int check_char(char c) {
+int check_letter(char c) {
     int flag = -1;
     for(int i = 65; i <= 90; i++) {
-        if((int)c == i)
+        if((int)c == i) {
             flag = 0;
+            break;
+        }
     }
     return flag;
 }
@@ -35,8 +38,14 @@ int count_weights() {
             return 0;
         }        
 
-        else if(strcmp(word, "LET") == 0)
-            num_commands += 3;
+        else if(strcmp(word, "LET") == 0) {
+            word = strtok(NULL, " \n");
+            word = strtok(NULL, "\n");
+            if(word[strlen(word) - 1] != str[strlen(str) - 1])
+                num_commands += 3;
+            else
+                num_commands++;
+        }    
 
         else if(strcmp(word, "IF") == 0)
             num_commands += 4;
@@ -57,9 +66,9 @@ int count_weights() {
 
 int translate_basic() {
     char *word;
-    int number, temp, check_num = 10;
-    counter = -1, after_end = 1;
-    //int after_end = 1, temp_if, num_wars = 0, var1_if, var2_if;
+    int number = 0, temp, check_num = 10;
+    counter = -1;
+    after_end = 1;
     FILE *f1 = fopen("basic.vbs", "r");
     f2 = fopen("code.sa", "w");
     if(!f1)
@@ -69,42 +78,55 @@ int translate_basic() {
 
     while(!feof(f1)) {
         fgets(str, sizeof(str), f1);
+        strcpy(temp_string, str);
         word = strtok(str, " \n");
 
         number = atoi(word);
         if(number < check_num)
             return -1;
         check_num = number;
-        
-        counter++;
-
-        if(sc_memoryGet(counter, &temp) != 0)
-            return -1;
-        if(counter < 10)
-            fprintf(f2, "0%d ", counter);
-        else
-            fprintf(f2, "%d ", counter);
 
 //////////////////////////////////////////////////////
 
         word = strtok(NULL, " \n");
 
         if(strcmp(word, "INPUT") == 0) {
+            counter++;
+            if(sc_memoryGet(counter, &temp) != 0)
+                return -1;
+            if(counter < 10)
+                fprintf(f2, "0%d ", counter);
+            else
+                fprintf(f2, "%d ", counter); 
             if(INPUT() == -1)
                 return -1;
         }
 
         else if(strcmp(word, "OUTPUT") == 0) {
+            counter++;
+            if(sc_memoryGet(counter, &temp) != 0)
+                return -1;
+            if(counter < 10)
+                fprintf(f2, "0%d ", counter);
+            else
+                fprintf(f2, "%d ", counter); 
             if(OUTPUT() == -1)
                 return -1;
         }
 
         else if(strcmp(word, "LET") == 0) {
-            if(LET() == -1)
+            if(LET(-1) == -1)
                 return -1;
         }
 
         else if(strcmp(word, "END") == 0) {
+            counter++;
+            if(sc_memoryGet(counter, &temp) != 0)
+                return -1;
+            if(counter < 10)
+                fprintf(f2, "0%d ", counter);
+            else
+                fprintf(f2, "%d ", counter); 
             fprintf(f2, "%s", "HALT 00\n");
             fclose(f1);
             fclose(f2);
@@ -112,12 +134,19 @@ int translate_basic() {
         }
 
         else if(strcmp(word, "GOTO") == 0) {
-            if(GOTO() == -1)
+            counter++;
+            if(sc_memoryGet(counter, &temp) != 0)
+                return -1;
+            if(counter < 10)
+                fprintf(f2, "0%d ", counter);
+            else
+                fprintf(f2, "%d ", counter); 
+            if(GOTO(-1) == -1)
                 return -1;
         }
 
         else if(strcmp(word, "IF") == 0) {
-            if(IF() == -1)
+            if(IF(number) == -1)
                 return -1;
         }
 
@@ -127,10 +156,10 @@ int translate_basic() {
     return 0;
 }
 
-int IF() {
+int IF(int number) {
     char *word = strtok(NULL, " \n");
     int var, temp, res;
-    if(check_char(word[0]) == 0)
+    if(check_letter(word[0]) == 0)
         var = (int)word[0] - 65;
     else
         var = atoi(word);
@@ -143,9 +172,8 @@ int IF() {
             return -1;
         ptr = ptr->next;
     }
-    //temp_if = ptr->weight;
 
-    //if(strcmp(word, "<") == 0) {
+    if(strcmp(word, "<") == 0) {
         word = strtok(NULL, " \n");
 
         //if(check_char(word[0]) == 0) {
@@ -179,28 +207,67 @@ int IF() {
 	        fprintf(f2, "%d ", tail->weight + after_end);
 
             word = strtok(NULL, " \n");
-            if(GOTO() == -1)
-                return -1;
+            if(strcmp(word, "GOTO") == 0) {
+                if(GOTO(-1) == -1)
+                    return -1;
 
-	    counter++;
-	    if(sc_memoryGet(counter, &temp) != 0)
-	        return -1;
-	    if(counter < 10)
-	        fprintf(f2, "0%d ", counter);
-	    else
-	        fprintf(f2, "%d ", counter);
+	        counter++;
+	        if(sc_memoryGet(counter, &temp) != 0)
+	            return -1;
+	        if(counter < 10)
+	            fprintf(f2, "0%d ", counter);
+	        else
+	            fprintf(f2, "%d ", counter);
 
-            fprintf(f2, "%s %d\n", "JNEG", tail->weight + after_end);
-            after_end++;
+                fprintf(f2, "%s %d\n", "JNEG", tail->weight + after_end);
+                after_end++;
+            }
 
-        //}
+            else { 
+                if(strcmp(word, "INPUT") == 0) {
+                    if(INPUT() == -1)
+                        return -1;
+                }
+                else if(strcmp(word, "OUTPUT") == 0) {
+                    if(OUTPUT() == -1)
+                        return -1;
+                }
+                else if(strcmp(word, "LET") == 0) {
+                    if(LET(tail->weight + after_end) == -1)
+                        return -1;
+                }
+
+	        counter++;
+	        if(sc_memoryGet(counter, &temp) != 0)
+	            return -1;
+	        if(counter < 10)
+	            fprintf(f2, "0%d ", counter);
+	        else
+	            fprintf(f2, "%d ", counter);
+
+                fprintf(f2, "%s %d\n", "JNEG", tail->weight + 2);
+                after_end++;
+
+	        if(tail->weight + after_end < 10)
+	            fprintf(f2, "0%d ", tail->weight + after_end);
+	        else
+	            fprintf(f2, "%d ", tail->weight + after_end);
+
+                if(GOTO(number + 10) == -1) {
+                    int qq;
+                    printf("\nhere ");
+                    scanf("%d", &qq);
+                    return -1;
+                }
+            }
+    }
     return 0;
 }
 
 int INPUT() {
     char *word = strtok(NULL, " \n");
     fprintf(f2, "%s ", "READ");
-    if(check_char(word[0]) == -1)
+    if(check_letter(word[0]) == -1)
         return -1;
 
     int var = (int)word[0] - 65;
@@ -211,7 +278,7 @@ int INPUT() {
 int OUTPUT() {
     char *word = strtok(NULL, " \n");
     fprintf(f2, "%s ", "WRITE");
-    if(check_char(word[0]) == -1)
+    if(check_letter(word[0]) == -1)
         return -1;
 
     int var = (int)word[0] - 65;
@@ -219,11 +286,11 @@ int OUTPUT() {
     return 0;
 }
 
-int LET() {
-    int temp;
+int LET(int val) {
+    int temp, var;
     char *word = strtok(NULL, " \n");
 
-    if(check_char(word[0]) == -1)
+    if(check_letter(word[0]) == -1)
         return -1;
 
     int res = (int)word[0] - 65;
@@ -232,16 +299,79 @@ int LET() {
         return -1;
 
     word = strtok(NULL, " \n");
-    int var = (int)word[0] - 65;
-    fprintf(f2, "%s %d\n", "LOAD", (N-1) - var);
 
-    counter++;
-    if(sc_memoryGet(counter, &temp) != 0)
-         return -1;
-     if(counter < 10)
-         fprintf(f2, "0%d ", counter);
-     else
-         fprintf(f2, "%d ", counter);
+    if(check_letter(word[0]) == 0) {
+        counter++;
+        if(sc_memoryGet(counter, &temp) != 0)
+            return -1;
+        if(counter < 10)
+            fprintf(f2, "0%d ", counter);
+        else
+            fprintf(f2, "%d ", counter);
+
+        var = (int)word[0] - 65;
+        fprintf(f2, "%s %d\n", "LOAD", (N-1) - var);
+    }
+
+    else {
+        var = atoi(word);
+        if(after_end + tail->weight < 10)
+            fprintf(f2, "0%d = +%04d\n", after_end + tail->weight, var);
+        else
+            fprintf(f2, "%d = +%04d\n", after_end + tail->weight, var);
+
+        counter++;
+        if(sc_memoryGet(counter, &temp) != 0)
+            return -1;
+        if(counter < 10)
+            fprintf(f2, "0%d ", counter);
+        else
+            fprintf(f2, "%d ", counter);
+
+        fprintf(f2, "%s %d\n", "LOAD", after_end + tail->weight);
+
+        after_end++;
+    }
+
+    if(check_letter(temp_string[strlen(temp_string) - 2]) != 0) {
+        int j = 0, k = 0;
+        while((temp_string[j] != '+') && (temp_string[j] != '-') && (temp_string[j] != '*') && (temp_string[j] != '/')) {
+            j++;
+        }
+        j += 2;
+        char buffer_str[5];
+        while(temp_string[j] != '\0') {
+            buffer_str[k] = temp_string[j];
+            k++;
+            j++;
+        }
+
+        var = atoi(buffer_str);
+        if(after_end + tail->weight < 10)
+            fprintf(f2, "0%d = +%04d\n", after_end + tail->weight, var);
+        else
+            fprintf(f2, "%d = +%04d\n", after_end + tail->weight, var);
+    }
+
+    if(val == -1) {
+        counter++;
+        if(sc_memoryGet(counter, &temp) != 0)
+             return -1;
+         if(counter < 10)
+             fprintf(f2, "0%d ", counter);
+         else
+             fprintf(f2, "%d ", counter);
+    }
+    else {
+        after_end++;
+        val++;
+        if(sc_memoryGet(val, &temp) != 0)
+             return -1;
+         if(val < 10)
+             fprintf(f2, "0%d ", val);
+         else
+             fprintf(f2, "%d ", val);
+    }
 
     word = strtok(NULL, " \n");
     switch(word[0]) {
@@ -261,27 +391,52 @@ int LET() {
              fprintf(f2, "%s ", "DIVIDE");
              break; 
          }
-     }
-     word = strtok(NULL, " \n");
-     var = (int)word[0] - 65;
-     fprintf(f2, "%d\n", (N-1) - var);
+    }
+    word = strtok(NULL, " \n");
+    if(check_letter(word[0]) == 0) {
+        var = (int)word[0] - 65;
+        fprintf(f2, "%d\n", (N-1) - var);
+    }
 
-     counter++;
-     if(sc_memoryGet(counter, &temp) != 0)
-         return -1;
-     if(counter < 10)
-         fprintf(f2, "0%d ", counter);
-     else
-         fprintf(f2, "%d ", counter);
+    else {
+        if(after_end + tail->weight < 10)
+            fprintf(f2, "0%d\n", after_end + tail->weight);
+        else
+            fprintf(f2, "%d\n", after_end + tail->weight);
+        after_end++;
+    }
 
-     fprintf(f2, "%s ", "STORE");
-     fprintf(f2, "%d\n", (N-1) - res);
-     return 0;
+    if(val == -1) {
+        counter++;
+        if(sc_memoryGet(counter, &temp) != 0)
+             return -1;
+         if(counter < 10)
+             fprintf(f2, "0%d ", counter);
+         else
+             fprintf(f2, "%d ", counter);
+    }
+    else {
+        val++;
+        after_end++;
+        if(sc_memoryGet(val, &temp) != 0)
+             return -1;
+         if(val < 10)
+             fprintf(f2, "0%d ", val);
+         else
+             fprintf(f2, "%d ", val);
+    }
+
+    fprintf(f2, "%s ", "STORE");
+    fprintf(f2, "%d\n", (N-1) - res);
+    return 0;
 }
 
-int GOTO() {
-    char *word = strtok(NULL, " \n");
-    int var = atoi(word);
+int GOTO(int var) {
+    if(var == -1) {
+        char *word = strtok(NULL, " \n");
+        var = atoi(word);
+    }
+
     if(var % 10 != 0)
         return -1;
     var /= 10;
