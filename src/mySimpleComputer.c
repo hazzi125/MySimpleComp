@@ -1,6 +1,6 @@
 #include "mySimpleComputer.h"
 
-int mas_commands[] = {10, 11, 20, 21, 30, 31, 32, 33, 40, 41, 42, 43};
+int mas_commands[] = {10, 11, 20, 21, 30, 31, 32, 33, 40, 41, 42, 43, 55};
 
 int sc_memoryInit() {
     for(int i = 0; i < N; i++)

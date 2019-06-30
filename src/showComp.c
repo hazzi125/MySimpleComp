@@ -14,7 +14,7 @@ void memPrint() {
         }
         if(i % 10 == 0)
             mt_gotoXY((i / 10) + 3, 2);
-        printf("+%04d ", RAM[i]);
+        printf("+%04X ", RAM[i]);
     }
     mt_setbgcolor(DEFAULT);
     mt_setfgcolor(DEFAULT);

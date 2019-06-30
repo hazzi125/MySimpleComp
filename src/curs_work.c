@@ -136,6 +136,14 @@ int cu() {
                     break;
                 }
 
+                case 55: {
+                    if(accumulator > 0) {
+                        curs = inst_counter = operand;
+                        inst_counter--;
+                    }
+                    break;
+                }
+
                 case 43: {
                     raise(SIGUSR1);
                     break;

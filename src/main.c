@@ -109,7 +109,7 @@ int main() {
 
                         if(translate() == -1) {
                             int qq;
-                            printf("\nhere ");
+                            printf("\nheeere ");
                             scanf("%d", &qq); 
                             sc_regSet(OUT_OF_MEMORY, 1);
                         }

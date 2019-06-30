@@ -66,6 +66,9 @@ int translate() {
                     else if(strcmp(buf[i], "HALT") == 0)
                         comm = 43;
 
+                    else if(strcmp(buf[i], "JNS") == 0)
+                        comm = 55;
+
                     else if(strcmp(buf[i], "=") == 0)
                         flag_eq = 1;
 
